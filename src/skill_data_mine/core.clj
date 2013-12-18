@@ -13,14 +13,12 @@
   (dist-node-elems (get-xml-from-file "data/12-18-13-rss.xml" ))
   ;(dist-node-elems (get-xml-from-url "http://careers.stackoverflow.com/jobs/feed?searchTerm=java+clojure&location=60610&range=10&distanceUnits=Miles" ))
   (let [ 
-              ;conn (d/connect "datomic:free://localhost:4334/jobs")
-              conn (init-db "datomic:free://localhost:4334/job-posts")
+            conn (d/connect "datomic:free://localhost:4334/job-posts")
+            ;  conn (init-db "datomic:free://localhost:4334/job-posts")
               num-nodes (count @nodeList)
               cat-list (get-distinct-category-list)
               description "12-18-13-rss.xml"
-              ;;num-jobs (get-job-total conn)
             ]
-     ;;  (println (format "got %d jobs" num-jobs ))
        (println (format "got %d nodess" num-nodes ))
        (println (format "got %d skills" (count cat-list)))
         (persist-rss-data conn @nodeList cat-list (make-time-inst 2013 12 18) description)

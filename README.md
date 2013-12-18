@@ -30,6 +30,16 @@ Written by Lorin M Klugman
 
 ## Development Notes
 
+You should have the free version of Datomic running your localhost.
+
+See [Datomic's website for details] (http://www.datomic.com/)
+
+To install this projects schema. Run lein repl from the projects root directory.
+In the repl, run:
+(init-db "datomic:free://localhost:4334/job-posts")
+
+That function installs the schema and a custom function. 
+
 To run tests, issue the following command line:
 $> lein test
 
