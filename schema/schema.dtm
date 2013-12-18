@@ -1,0 +1,53 @@
+[{:db/id #db/id[:db.part/db]
+  :db/ident :jobs/job-key
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Job key as defined by career stack overfolw"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :jobs/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Job title"
+  :db.install/_attribute :db.part/db}
+  
+ {:db/id #db/id[:db.part/db]
+  :db/ident :jobs/skill-set
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Job skill set rss categories"
+  :db.install/_attribute :db.part/db}
+ 
+  {:db/id #db/id[:db.part/db]
+  :db/ident :skill-set/skill
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "Job skill rss category"
+  :db.install/_attribute :db.part/db} 
+  
+  {:db/id #db/id[:db.part/db]
+  :db/ident :snapshot/time
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "time data was extracted. milliseconds"
+  :db.install/_attribute :db.part/db}
+  
+  {:db/id #db/id[:db.part/db]
+  :db/ident :snapshot/description
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "free form description of snapshot"
+  :db.install/_attribute :db.part/db} 
+  
+  {:db/id #db/id[:db.part/db]
+  :db/ident :snapshot/job-set
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "List of Jobs obtained during snapshot"
+  :db.install/_attribute :db.part/db}
+  
+  ]
