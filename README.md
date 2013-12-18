@@ -14,12 +14,12 @@ I'll add a blog post on my website which details the implentation. Part of a ser
 See my [website, Public-Action.org] (http://public-action.org/mob/polyglot-index.html)  to read the articles series.
 
 ## Process
-Parses an RSS feed (of job postings).
-Stores the job title, unique identifier and skill list in Datomic.
-Generates severak reports.
--- Filter the job posts further (E.G. show me jobs that include "Datomic")
--- Top 10 skills found, display percent per skill. E.G. sql was found in 10% of the jobs, jpa in 8%, etc.
--- Report history of particular skill. E.G. Dec 1, 2013 Clojure found in 10% of jobs, Dec 2, 2013 Clojure found in 12% of jobs, etc.
+* Parses an RSS feed (of job postings).
+* Stores the job title, unique identifier and skill list in Datomic.
+* Generates severak reports.
+    * Filter the job posts further (E.G. show me jobs that include "Datomic")
+    * Top 10 skills found, display percent per skill. E.G. sql was found in 10% of the jobs, jpa in 8%, etc.
+    * Report history of particular skill. E.G. Dec 1, 2013 Clojure found in 10% of jobs, Dec 2, 2013 Clojure found in 12% of jobs, etc.
 
 
 ## License
