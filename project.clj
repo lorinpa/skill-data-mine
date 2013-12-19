@@ -1,7 +1,7 @@
-(defproject job-skill "dev-1.0"
+(defproject skill-data-mine "dev-1.0"
   :description "Job Skill Correlation Reporter"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
+  :url "http://public-action.org/mob/index.html"
+  :license {:name "GPL 2.0 Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [ [org.clojure/clojure "1.5.1"]
                   [com.datomic/datomic-free "0.9.4324"]
@@ -10,6 +10,6 @@
                   [incanter/incanter-svg "1.5.4"]
                   [clj-time "0.6.0"]
                  ]
-  :main job-skill.core
+  :main skill-data-mine.core
   
   )
