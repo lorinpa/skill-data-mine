@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0">
+    <channel xmlns:os="http://a9.com/-/spec/opensearch/1.1/">
+        <title>Jobs matching “java clojure” within 10 miles of 60610 - Test Site</title>
+	<link>http://careers.stackoverflow.com/jobs</link>
+	<description>A sample site</description>
+	<os:totalResults>3</os:totalResults>
+	<item>
+	<guid isPermaLink="true">http://test-site.com/jobs/44359/senior-developer-architect-test1</guid>
+	<link>http://test-site.com/jobs/44359/senior-developer-architect-test1</link>
+	<title>One</title>
+	<description>a sample</description>
+	<pubDate>Thu, 21 Nov 2013 13:44:52 Z</pubDate>
+	<a10:updated>2013-11-21T13:44:52Z</a10:updated>
+	</item>
+	<item>
+	<guid isPermaLink="true">http://test-site.com/jobs/43578/entry-level-developer-test2</guid>
+	<link>http://test-site.com/jobs/43578/entry-level-developer-test2</link>
+	<category>java</category>
+	<category>javascript</category>
+	<category>spring</category>
+	<category>dojo</category>
+	<category>css3</category>
+	<title>Two</title>
+	<description>Sample 2</description>
+	<pubDate>Thu, 05 Dec 2013 14:44:52 Z</pubDate>
+	<a10:updated>2013-12-05T14:44:52Z</a10:updated>
+	</item>
+	<item>
+	<guid isPermaLink="true">http://test-site.com/jobs/333111/entry-level-developer-test3</guid>
+	<link>http://test-site.com/jobs/333111/entry-level-developer-test3</link>
+	<category>java</category>
+	<category>javascript</category>
+	<category>sql</category>
+	<category>jpq</category>
+	<category>hibernate</category>
+	<title>Three</title>
+	<description>Sample 2</description>
+	<pubDate>Thu, 04 Dec 2013 14:44:52 Z</pubDate>
+	<a10:updated>2013-12-05T12:44:52Z</a10:updated>
+	</item>
+	</channel>
+</rss>
