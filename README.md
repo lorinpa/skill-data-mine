@@ -40,7 +40,25 @@ In the repl, run:
 
 That function installs the schema and a custom function. 
 
-To run tests, issue the following command line:
-$> lein test
+Before running Peristence and Reporting tests, you need to create a test database instance and load the test database instance with data.
+To create and load the test database, execute the following command line once. Note! Datomic must be running on locahost.
 
+$> lein test skill-data-mine.load-test
 
+The test suite suite is divided into:
+* RSS xml processing
+* Peristence and Query
+* Reporting
+
+Persistence and Reporting tests require Datomic running on localhost. Make sure you've followed the above note (installed and loaded test database). 
+RSS xml processing requires the test files located in the data/ disk directory.
+
+To run RSS tests, issue the following command line:
+$> lein test skill-data-mine.rss-test
+
+To run Persisence and Quert test, issue the following command line:
+$> lein test skill-data-mine.persist-test
+
+To run Reporting tests, issue the following command line:
+
+$> lein test skill-data-mine.report-test
