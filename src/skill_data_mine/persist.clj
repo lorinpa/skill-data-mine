@@ -63,7 +63,6 @@
 )
 
 ;; connect to existing database
-;;
 (defn get-connection [uri]
   (d/connect uri)
 )
@@ -74,21 +73,7 @@
  (let [results (q  '[:find ?c :in $ ?t :where [?c :jobs/job-key ?t]]
               (db conn) job-key) ]
          (ffirst results)))
-;         (first results)))
 
-
-;; takes a vector of job-keys (longs)
-;; and returns a vector of corresponding
-;; database entity id's
-(comment
-(defn get-job-refs [conn jobs-vec]
-  (let [res-vec[] rl
-  (for [job-key jobs-vec]
-    (conj res-vec (get-job-entity-id conn job-key))
-  )]
-  (vec (flatten rl))
-))
-)
 
 ;; If new return temp_id else return current entity id
 (defn get-entity-id-for-job-assertion [conn job-key] 
@@ -133,21 +118,6 @@
 (defn process-skill [conn skill]
   (when (skill-not-exists? conn skill)
     (add-skill conn skill)))
-
- ;; returns all jobs.
- ;; if a job contains a set of skills, those
- ;; skills are returned as a vector
-(defn get-job-skills [conn]
-    (let [
-        results (q  '[:find  ?n  (vec ?u )
-                      :where 
-                      [?c :jobs/title ?n]
-                      [?c :jobs/job-key ?k]
-                      [?c :jobs/skill-set ?r]
-                      [?r :skill-set/skill ?u]
-                      ]
-              (db conn)) ]
-        results))
 
 ;; Gets the number of jobs per skill in a particular
 ;; snapshot. Creates a vector of all skills that
