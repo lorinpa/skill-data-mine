@@ -16,7 +16,7 @@ See my [website, Public-Action.org] (http://public-action.org/mob/polyglot-index
 ## Process
 * Parses an RSS feed (of job postings).
 * Stores the job title, unique identifier and skill list in Datomic.
-* Generates severak reports.
+* Generates several reports.
     * Filter the job posts further (E.G. show me jobs that include "Datomic")
     * Top 10 skills found, display percent per skill. E.G. sql was found in 10% of the jobs, jpa in 8%, etc.
     * Report history of particular skill. E.G. Dec 1, 2013 Clojure found in 10% of jobs, Dec 2, 2013 Clojure found in 12% of jobs, etc.
@@ -29,6 +29,9 @@ Code licensed under [GNU General Public License, version 2] (http://www.gnu.org/
 Written by Lorin M Klugman
 
 ## Development Notes
+
+TODO: Currently the listing core.clj contains the program's run parameters hard-coded. Will be adding a command line process for lein soon.
+
 
 You should have the free version of Datomic running your localhost.
 
