@@ -62,6 +62,12 @@
   )
 )
 
+;; connect to existing database
+;;
+(defn get-connection [uri]
+  (d/connect uri)
+)
+
 ;; queries the database for a particular job-key (E.G. 33487)
 ;; if found, returns the database entity id
 (defn get-job-entity-id [conn job-key]
@@ -263,13 +269,6 @@
             (get-job-keys-by-snapshot-and-skill conn description s))))]
     (vec (filter (fn [a] (not (nil? a)) )  result))
   ))
-
-
-;;(defmethod get-job-keys-by-snapshot-and-skill clojure.lang.PersistentVector
-;;  [conn description skill ]
-;;   (vec (distinct (flatten
- ;;     (for [s skill] 
- ;;       (get-job-keys-by-snapshot-and-skill conn description s))))))
 
 
 (defmulti get-jobs-by-snapshot-and-skill (fn [one two three] (class three)))
