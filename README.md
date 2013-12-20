@@ -36,14 +36,15 @@ See [Datomic's website for details] (http://www.datomic.com/)
 
 To install this projects schema. Run lein repl from the projects root directory.
 In the repl, run:
-(init-db "datomic:free://localhost:4334/job-posts")
+
+    * (init-db "datomic:free://localhost:4334/job-posts")
 
 That function installs the schema and a custom function. 
 
 Before running Peristence and Reporting tests, you need to create a test database instance and load the test database instance with data.
 To create and load the test database, execute the following command line once. Note! Datomic must be running on locahost.
 
-$> lein test skill-data-mine.load-test
+    * $> lein test skill-data-mine.load-test
 
 The test suite suite is divided into:
 * RSS xml processing
@@ -54,11 +55,11 @@ Persistence and Reporting tests require Datomic running on localhost. Make sure 
 RSS xml processing requires the test files located in the data/ disk directory.
 
 To run RSS tests, issue the following command line:
-$> lein test skill-data-mine.rss-test
+    * $> lein test skill-data-mine.rss-test
 
 To run Persisence and Quert test, issue the following command line:
-$> lein test skill-data-mine.persist-test
+    * $> lein test skill-data-mine.persist-test
 
 To run Reporting tests, issue the following command line:
 
-$> lein test skill-data-mine.report-test
+    * $> lein test skill-data-mine.report-test
