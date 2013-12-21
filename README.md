@@ -38,7 +38,7 @@ See my [website, Public-Action.org] (http://public-action.org/mob/polyglot-index
 ## License
 Code licensed under [GNU General Public License, version 2] (http://www.gnu.org/licenses/gpl-2.0.html")
 
-## License
+## Author
 Written by Lorin M Klugman
 
 ## Development Notes
