@@ -289,4 +289,12 @@
             tot (get-job-total-by-snapshot-and-keywords conn d keyword-vector) percent (* (float (/ freq tot)) 100)] 
         [d percent]))))
 
+;; used to validate command line argument
+(defn snapshot-description-not-exists? [conn snapshot-description]
+  (let [ num-jobs (count (get-snapshot-details conn snapshot-description)) ]
+    (if (= num-jobs 0)  
+      true
+      (throw (Exception. (format "Decription: %s already exists in the database. Please enter a unique description."  snapshot-description)))
+   )))
+
 
