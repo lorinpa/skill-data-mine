@@ -64,6 +64,7 @@ The test suite suite is divided into:
 * RSS xml processing
 * Peristence and Query
 * Reporting
+* Command Line Processing
 
 Persistence and Reporting tests require Datomic running on localhost. Make sure you've followed the above note (installed and loaded test database). 
 RSS xml processing requires the test files located in the data/ disk directory.
@@ -77,3 +78,7 @@ To run Persisence and Quert test, issue the following command line:
 To run Reporting tests, issue the following command line:
 
     * $> lein test skill-data-mine.report-test
+
+To run Command Line Processing tests, issue the following command line:
+
+    * $> lein test skill-data-mine.core-test
