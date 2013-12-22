@@ -297,4 +297,12 @@
       (throw (Exception. (format "Decription: %s already exists in the database. Please enter a unique description."  snapshot-description)))
    )))
 
+;; used to validate command line argument
+(defn snapshot-description-exists? [conn snapshot-description]
+  (let [ num-jobs (count (get-snapshot-details conn snapshot-description)) ]
+    (if (>  num-jobs 0)  
+      true
+      (throw (Exception. (format "Snapshot Decription: %s does not exist, or contains no jobs."  snapshot-description)))
+   )))
+
 

@@ -12,6 +12,8 @@
   (throw (Exception. (format "File Does Not Exist: %s "  filepath)))))
 
 
+(defn report-command? [args]
+  (= (nth args 0) "-report"))
 
 (defn valid-command-line? [conn args]
     (println "Checking command line.")
@@ -31,14 +33,11 @@
           (System/exit 0) )  
       )))
 
-(defn -main
-  "Entry Point to Program"
-  [& args]
-  (let [   conn (d/connect "datomic:free://localhost:4334/job-posts")
-           valid   (valid-command-line? conn args)
-           file-to-process (nth args 1)
-           snapshot-description (nth args 3)
-           date-time (make-time-inst (nth args 5))]
+(defn process-import-command [conn args]
+  (let [  valid   (valid-command-line? conn args)
+          file-to-process (nth args 1)
+          snapshot-description (nth args 3)
+          date-time (make-time-inst (nth args 5))]
             (println "Processing File")
             (dist-node-elems (get-xml-from-file file-to-process ))
             (let [ num-nodes (count @nodeList)
@@ -47,7 +46,39 @@
                 (println (format "got %d skills" (count cat-list)))
                 (println "Persisting Data")
                 (persist-rss-data conn @nodeList cat-list date-time  snapshot-description)
-                (display-top-stats-chart conn snapshot-description 10 (get-job-total conn snapshot-description))
-            )))
+                (display-top-stats-chart conn snapshot-description 10 (get-job-total conn snapshot-description)))))
+
+(defn process-report-command [conn args]
+  (cond 
+    (= (count args) 1) (report-snapshots conn)
+    (= (count args) 3) 
+        (do
+            (cond 
+              (= (nth args 1) "jobs") (report-job-details conn (nth args 2)) 
+              (= (nth args 1) "skill-history") (report-skill-history conn (nth args 2))
+              :else (println "Invalid command line. Usage: -report jobs SNAPSHOT or -report skill-history SKILL (OPTIONAL skill filter list*)")
+            )
+        )
+    (> (count args) 3) (report-skill-history-filtered conn (nth args 2) (subvec (vec args ) 3))
+
+    :else
+    (do
+      (println "Available reports:")
+      (println "-report jobs SNAPSHOT")
+      (println "-report skill-history SKILL")
+    )
+  )
+  (System/exit 0)
+)
+
+(defn -main
+  "Entry Point to Program"
+  [& args]
+  (let [   conn (d/connect "datomic:free://localhost:4334/job-posts")]
+           (if (report-command? args)
+              (process-report-command conn args)
+              (process-import-command conn args)  
+           )
+    ))
 
 

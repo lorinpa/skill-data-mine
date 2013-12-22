@@ -56,3 +56,28 @@
   (let [jh (get-skill-history conn skill) ] 
     (view (bar-chart (vec (map first jh)) (vec (map last jh))  :title skill :vertical false :x-label "Skill" :y-label "% of Job Postings")) )
 )
+
+(defn report-snapshots [conn]
+   (println "*** SNAPSHOTS ***")
+   (pprint (get-snapshot-descriptions conn)))
+
+(defn report-job-details [conn snapshot-description] 
+  (try 
+    (snapshot-description-exists? conn snapshot-description)
+    (println (format "** Job Details for Snapshot: %s **" snapshot-description ))
+    (pprint (get-snapshot-details conn snapshot-description))
+    (catch Exception e (println (.getMessage e)))
+  )
+)
+
+(defn report-skill-history [conn skill]
+ (println (format "** Skill History: %s **" skill))
+ (pprint (get-skill-history conn skill)))
+
+(defn report-skill-history-filtered [conn skill filter-vec]
+  (println (format "** Skill History: %s Filter : %s **" skill filter-vec))
+  
+  (pprint (get-skill-history-keyword-filter  conn skill (vec filter-vec)))
+
+  )
+
