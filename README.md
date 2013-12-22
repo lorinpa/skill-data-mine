@@ -23,9 +23,10 @@ See my [website, Public-Action.org] (http://public-action.org/mob/polyglot-index
 * NOTE! I am using the RSS feed published by [Careers 2.0 by stackoverflow] (http://careers.stackoverflow.com/). Skills such as "clojure" or "java" are published as RSS categories. That what we need to analyze skill coorelation.
 
 
-## Run
+## Basic Usage
 * Download an RSS xml file. (Recommended: store in the "data/" disk directory of this project). Hint! Make sure you've stored an XML file, not an HTML represention of the RSS feed.
-* Verify Datomic is running on localhost (see below Prepare Database)
+* Verify Datomic is running on localhost (see below Prepare Database).
+
 * From the root directory of this project, run the following command line:
     * $> lein run -in INPUTFILE -name DESCRIPTION -d yyyy-MM-dd
 * Example
@@ -34,6 +35,25 @@ See my [website, Public-Action.org] (http://public-action.org/mob/polyglot-index
     * Program displays a horizontal bar chart. 
         * Total number of jobs found is RSS xml file.
         * For each skill, how many jobs categorized this skill, what percentage of all jobs.
+
+## Producing Reports
+
+* Report All Snapshot Descriptions
+    * $> lein -report
+
+* Report Snaphot Details ( displays each job title, job key  and skill list)
+    * $> lein run -report jobs SNAPSHOT-DESCRIPTION
+
+* Report SKill History (for each snaphot reports the percent of jobs this skill appeared)
+    * $> lein run -report skill-history SKILL
+* Example:
+    * $> lein run -report skill-history python
+
+* Report Skill History - filtered (Same as above Skill History Report, except you can append a list of skills)
+    * $> lein run -report skill-history SKILL  SKILL-LIST
+* Example:
+    * $> lein run -report skill-history python sql linux 
+    Restricts jobs. Each job in used in report statistics must include either "sql" or "linux" as a skill. Report the percent of jobs python appears.
 
 ## License
 Code licensed under [GNU General Public License, version 2] (http://www.gnu.org/licenses/gpl-2.0.html")
