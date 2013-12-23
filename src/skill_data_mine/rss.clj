@@ -31,7 +31,6 @@
 
 (defn parse-elem [elem]
    (let [ content (vec (:content elem))
-     len (count content)
      data-vals  (map (fn [z] (:content z)) content)
      data-keys (map (fn [z] (:tag z)) content)
      data-vec (interleave data-keys data-vals)
