@@ -43,10 +43,10 @@
 (deftest test-distinct-category-list
   (testing "read an rss file"
       (println "testing distinct category list")
-      (is (> (count @nodeList) 0))
-      (is (= (count @nodeList) 4))
-      (is (> (count @categoryList) 0))
-      (is (= (count (get-distinct-category-list ))  11) )
+      (is (> (count nodeList) 0))
+      (is (= (count nodeList) 3))
+      (is (> (count categoryList) 0))
+      (is (= (count categoryList) 8) )
     ))
 
 
@@ -54,20 +54,19 @@
 (deftest test-first-node-values
   (try
     (testing "values parsed for first node"
-        (is (= (first (:title (first @nodeList)))  "One"))
-        (is (=  (:job-key (first @nodeList))  44359))) 
+        (is (= (first (:title (first nodeList)))  "One"))
+        (is (=  (:job-key (first nodeList))  44359))) 
   (catch Exception e 
     (println (format "Unexpected exception in test-first-node-values %s" (.getMessage e))))))
-
 
 
 ;; test the values in the third job
 (deftest test-third-node-values
   (try
     (testing "values parsed for the last node"
-        (is (= (first (:title (nth @nodeList 2 )) )  "Three"))
-        (is (=  (:job-key (nth @nodeList 2) ) 333111))
-        (is (= (count (:categories (nth @nodeList 2)))  5)) 
+        (is (= (first (:title (nth nodeList 2 )) )  "Three"))
+        (is (=  (:job-key (nth nodeList 2) ) 333111))
+        (is (= (count (:categories (nth nodeList 2)))  5)) 
   (catch Exception e 
     (println (format "Unexpected exception in test-last-node-values %s" (.getMessage e)))))))
 
@@ -77,10 +76,11 @@
 (deftest test-process-one-rss-item
   (try
     (testing "process one rss item stored by xml-seq"
-      (parse-elem (read-string test-element))
-      (is (= (first (:title (last @nodeList)))  "Four"))
-      (is (=  (:job-key (last @nodeList))  555666))
-      (is (= (count (:categories (last @nodeList)))  3)) 
-
+      (let [  data-map (parse-elem (read-string test-element))
+              node  (:node data-map) 
+            ]
+      (is (= (first (:title node)) "Four"))
+      (is (=   (:job-key node)  555666))
+      (is (= (count  (:categories  node)) 3))) 
   (catch Exception e 
     (println (format "Unexpected exception in test-extract-job-key %s" (.getMessage e)))))))

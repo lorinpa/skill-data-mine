@@ -17,7 +17,13 @@
      {:tag :pubDate, :attrs nil, :content [\"Thu, 04 Dec 2013 14:44:52 Z\"]} 
      {:tag :a10:updated, :attrs nil, :content [\"2013-12-05T12:44:52Z\"]}]}"
   )
-  (let [ file-contents (get-xml-from-file "data/test-sample2-rss.xml")]
-       (dist-node-elems file-contents)
+  (let [  file-contents  (get-xml-from-file "data/test-sample2-rss.xml")
+          data-vec (dist-node-elems file-contents)
+          nodes (map #(:node %1) data-vec)
+          categories (distinct (flatten (map #(:categories %1) data-vec)))
+        ]
+       (def nodeList nodes)
+       (def categoryList categories)
        (function-list)
    ))
+

@@ -37,16 +37,18 @@
   (let [  valid   (valid-command-line? conn args)
           file-to-process (nth args 1)
           snapshot-description (nth args 3)
-          date-time (make-time-inst (nth args 5))]
+          date-time (make-time-inst (nth args 5))
+        ]
             (println "Processing File")
-            (dist-node-elems (get-xml-from-file file-to-process ))
-            (let [ num-nodes (count @nodeList)
-                  cat-list (get-distinct-category-list)]
-                (println (format "got %d jobs" num-nodes ))
-                (println (format "got %d skills" (count cat-list)))
+            (let [  data-vec (dist-node-elems (get-xml-from-file file-to-process))
+                    nodes (map #(:node %1) data-vec)
+                    categories (distinct (flatten (map #(:categories %1) data-vec)))]
+                (println (format "got %d jobs" (count nodes) ))
+                (println (format "got %d skills" (count categories)))
                 (println "Persisting Data")
-                (persist-rss-data conn @nodeList cat-list date-time  snapshot-description)
+                (persist-rss-data conn nodes categories date-time  snapshot-description)
                 (display-top-stats-chart conn snapshot-description 10 (get-job-total conn snapshot-description)))))
+
 
 (defn process-report-command [conn args]
   (cond 
