@@ -14,16 +14,18 @@
   (let [job-str (to-string (first (:link data-map))) ]
     (Long. ( (clojure.string/split job-str #"/") 4))))
 
+;; we break down the complex data structure
+;; extract the keys and values, then put them together as maps
+;; filter the maps so that we are only looking at :category
+;; extract the remaining values as a vector
 (defn extract-categories [data-vec]
-  (vec (let [rl (range 0 (count data-vec)) 
-              f (for [n rl] 
-                  (cond (= (keyword (nth data-vec n)) :category) 
-                      (first (nth data-vec (+ n 1))))) ] 
-      (filter (fn [a] (not (nil? a))) f))) 
+  (let [ key-set (filter #(if (not (vector? %1) ) %1) data-vec) 
+         val-set (map first (filter vector? data-vec)) 
+         maps (map (fn [a b] (assoc {} a b)) key-set val-set) 
+         categories (filter #(if (= (ffirst %1) :category) %1) maps) 
+         category-vals (vec (map :category categories ))] 
+    category-vals)
 )
-
-(defn map-to-node [mp cl]
-  (Node. (:title mp) (:pubDate mp) (:link mp) (extract-job-key (:link mp))  cl ))
 
 (defn create-node [title pubDate link job-key categories ]
   (Node. title pubDate link job-key categories))
