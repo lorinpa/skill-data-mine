@@ -21,7 +21,7 @@
 (defn extract-categories [data-vec]
   (let [ key-set (filter #(if (not (vector? %1) ) %1) data-vec) 
          val-set (map first (filter vector? data-vec)) 
-         maps (map (fn [a b] (assoc {} a b)) key-set val-set) 
+         maps (map  #(assoc {} %1 %2) key-set val-set) 
          categories (filter #(if (= (ffirst %1) :category) %1) maps) 
          category-vals (vec (map :category categories ))] 
     category-vals)
