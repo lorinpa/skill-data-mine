@@ -14,15 +14,14 @@
   (testing "loading sample rss data and storing in database"
     (dist-node-elems (get-xml-from-file "data/test-sample2-rss.xml" ))
     (let [ 
-                num-nodes (count @nodeList)
-                cat-list (get-distinct-category-list)
-               ; conn (init-db "datomic:free://localhost:4334/job-posts")
-
-               ; description "test-sample2-rss.xml"
+                data-vec (dist-node-elems (get-xml-from-file  "data/test-sample2-rss.xml" ))
+                nodes (map #(:node %1) data-vec)
+                num-nodes (count nodes)
+                cat-list (distinct (flatten (map #(:categories %1) data-vec)))
               ]
           (println (format "got %d nodess" num-nodes ))
           (println (format "got %d skills" (count cat-list)))
-          (persist-rss-data conn @nodeList cat-list (make-time-inst 2013 12 18) snapshot-description)
+          (persist-rss-data conn nodes cat-list (make-time-inst 2013 12 18) snapshot-description)
         )
      (is (= (get-job-total conn snapshot-description) 3 ))
    ) 
