@@ -29,28 +29,33 @@
   ) 
 ))
 
-;; Note! our data source returns job posts that don't meet our location
-;; criteria but not our skill criteria. Thus after a study of the results,
-;; I decided to filter the data further. The keyword filter removes any
-;; job posts that don't have any of the keywords (removes from results not database)
-(deftest test-skill-history-query-with-keyword-filter
-  (testing "test query skill frequency history over all snapshots filtered by keyword vector"
-    (let [ data-vec (get-skill-history-keyword-filter conn "java" ["java" "clojure"])]
+
+;; tests query for a list of skills. 
+(deftest test-skill-list-history
+  (testing "test query list of skills "
+    (let [ data-vec (report-skill-list-stats conn  ["java" "javascript"])]
     (is (vector data-vec))
   )
 ))
 
-;; Tests query. Reports each skill in snapshot. Reports the number of jobs
-;; found for each skill.
-;; The query filters the job posts for only jobs that contain our original 
-;; keyword search (E.G. "java" "clojure")
-;;(defn get-skill-freq-by-snapshot-and-keywords [conn snapshot-description keyword-vector] 
-(deftest test-skill-frequencies-per-snapshot-with-keyword-filter
-  (testing "test query skill frequency history over all snapshots filtered by keyword vector"
-    (let [  data-vec (get-skill-freq-by-snapshot-and-keywords  conn snapshot-description  ["java" "clojure"])]
+
+;; tests query for a list of skills. 
+(deftest test-skill-list-history-no-match
+  (testing "test query list of skills "
+    (let [ data-vec (report-skill-list-stats conn  ["java" "clojure"])]
     (is (vector data-vec))
   )
 ))
+
+;; tests query for a list of skills. 
+(deftest test-skill-list-history-non-exist-skill
+  (testing "test query list of skills - search skills do not exist "
+    (let [ data-vec (report-skill-list-stats conn  ["dog-walker" "sales"])]
+    (is (vector data-vec))
+  )
+))
+
+
 
 (deftest test-snapshot-details-query
   (testing "tests query to get all jobs for a particular snapshot"
