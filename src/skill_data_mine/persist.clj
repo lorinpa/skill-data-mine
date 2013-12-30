@@ -1,15 +1,18 @@
 (ns skill-data-mine.persist)
 
+(use 'skill-data-mine.filters)
 (use '[datomic.api :only [q db] :as d])
 
 
 ;; a function object we use to store in the database
+(comment
 (def percent-func  [{:db/id #db/id [:db.part/user]
               :db/ident :calc-percent
               :db/fn #db/fn {:lang "clojure" :params [skill tot freq] 
                              :code [(format "%s %d %.4f" skill freq (* (float (/ freq  tot)) 100) )]
                              }
              }])
+)
 
 ;; persist a skill to the database 
 ;; E.G. "programming"
@@ -27,25 +30,17 @@
 ;; job has skill list
 (defmethod add-job clojure.lang.PersistentVector
   [conn entity-id title job-key skill-list]
-    (let [  
-          ;emp_id (d/tempid :db.part/user) 
-          ]
-         @(d/transact conn
-          [{:db/id entity-id :jobs/title title,
-            :jobs/job-key job-key,
-            :jobs/skill-set skill-list}
-            ])
-        ))
+  @(d/transact conn [{:db/id entity-id 
+                      :jobs/title title,
+                      :jobs/job-key job-key,
+                      :jobs/skill-set skill-list}]))
+
 ;; where skill-list is nil(d/transact conn percent-func)
 (defmethod add-job nil 
   [conn entity-id title job-key skill-list]
-    (let [  
-          ;temp_id (d/tempid :db.part/user) 
-          ]
-         @(d/transact conn
-          [{:db/id entity-id :jobs/title title,
-            :jobs/job-key job-key}
-            ])))
+  @(d/transact conn [{:db/id entity-id 
+                      :jobs/title title,
+                      :jobs/job-key job-key}]))
 
 ;; creates the database
 ;; installs the schema
@@ -55,17 +50,22 @@
   (d/create-database uri)
   (let [conn (d/connect uri) 
         schema-tx (read-string (slurp "schema/schema.dtm"))
+        functions-tx (read-string (slurp "schema/functions.dtm"))
   ]
   (d/transact conn schema-tx)
-  (d/transact conn percent-func)
+  (d/transact conn functions-tx)
   conn
   )
 )
 
 ;; connect to existing database
 (defn get-connection [uri]
-  (d/connect uri)
-)
+  (d/connect uri))
+
+;; release connection resources 
+(defn release-connection [conn]
+  (d/release conn))
+
 
 ;; queries the database for a particular job-key (E.G. 33487)
 ;; if found, returns the database entity id
@@ -305,4 +305,52 @@
       (throw (Exception. (format "Snapshot Decription: %s does not exist, or contains no jobs."  snapshot-description)))
    )))
 
+;; function calculates percents and then
+;; packages up results for a report
+(defn get-job-stats [conn snapshot-description]
+    (let [  res (get-job-skills-freq conn snapshot-description)
+            total (get-job-total conn snapshot-description)
+            rows 
+              (for [n res]
+                   (d/invoke (db conn) :calc-percent (nth n 0) total (int (nth n 1))  ) )
+         ]
+        (assoc {} :rows rows :total total)
+))
 
+
+(defn report-job-skills-freq [ conn snapshot-description ]
+    (let [  total (get-job-total conn snapshot-description )
+            res (get-job-skills-freq conn snapshot-description )
+            rows (for [n res]
+                   (d/invoke (db conn) :calc-percent (nth n 0) total (int (nth n 1))  ) )
+          ]
+       (assoc {} :rows rows :total total)
+    ))
+
+(defn count-jobs-with-skill-list [conn snapshot-description skill-list]
+  (let [ skill-vectors 
+          (map last (q '[:find ?title (vec ?skill) 
+                         :in $ ?desc  
+                         :with ?job-key 
+                         :where [?t :snapshot/description ?desc] 
+                         [?t :snapshot/job-set ?job-set]
+                         [?job-set :jobs/title ?title] 
+                         [?job-set :jobs/job-key ?job-key]
+                         [?job-set :jobs/skill-set ?skill-ref]
+                         [?skill-ref :skill-set/skill ?skill]] (db conn) snapshot-description))]
+      (how-many-contain skill-vectors skill-list)))
+
+(defn skill-list-stat [conn snapshot-description skill-list]
+  (let [  total (get-job-total conn snapshot-description)
+          times-found (count-jobs-with-skill-list conn snapshot-description skill-list)
+          percent (* (float (/ times-found total)) 100)
+        ]
+  (assoc {} :snapshot snapshot-description :total total :freq times-found :percent percent)))
+
+(defn report-skill-list-stats [conn skill-list]
+  (let [ snapshots (get-snapshot-descriptions conn)
+         rows (for [snapshot snapshots] (skill-list-stat conn snapshot skill-list)) 
+       ]
+      rows
+  )  
+)
