@@ -1,0 +1,5 @@
+[{:db/id #db/id [:db.part/user]
+    :db/ident :calc-percent
+    :db/fn #db/fn {:lang "clojure" :params [skill tot freq] 
+    :code [(format "%s %d %.4f" skill freq (* (float (/ freq  tot)) 100) )]}}
+]
