@@ -49,11 +49,11 @@ See my [website, Public-Action.org] (http://public-action.org/mob/polyglot-index
 * Example:
     * $> lein run -report skill-history python
 
-* Report Skill History - filtered (Same as above Skill History Report, except you can append a list of skills)
-    * $> lein run -report skill-history SKILL  SKILL-LIST
+* Report Skill History - list (for each snapshot, reports the percent all skills (in list) are present in a job.
+    * $> lein run -report skill-history SKILL-LIST
 * Example:
     * $> lein run -report skill-history python sql linux 
-    Restricts jobs. Each job in used in report statistics must include either "sql" or "linux" as a skill. Report the percent of jobs python appears.
+    Reports the percent of jobs that contained all 3 skill (python sql linux) in each snapshot.
 
 ## License
 Code licensed under [GNU General Public License, version 2] (http://www.gnu.org/licenses/gpl-2.0.html")
@@ -85,6 +85,7 @@ The test suite suite is divided into:
 * Peristence and Query
 * Reporting
 * Command Line Processing
+* Filter Functions
 
 Persistence and Reporting tests require Datomic running on localhost. Make sure you've followed the above note (installed and loaded test database). 
 RSS xml processing requires the test files located in the data/ disk directory.
@@ -102,3 +103,7 @@ To run Reporting tests, issue the following command line:
 To run Command Line Processing tests, issue the following command line:
 
     * $> lein test skill-data-mine.core-test
+
+To run Filter functions tests, issue the following command line:
+
+    * $> lein test skill-data-mine.filters-test
