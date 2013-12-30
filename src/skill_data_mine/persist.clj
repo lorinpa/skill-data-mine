@@ -4,15 +4,6 @@
 (use '[datomic.api :only [q db] :as d])
 
 
-;; a function object we use to store in the database
-(comment
-(def percent-func  [{:db/id #db/id [:db.part/user]
-              :db/ident :calc-percent
-              :db/fn #db/fn {:lang "clojure" :params [skill tot freq] 
-                             :code [(format "%s %d %.4f" skill freq (* (float (/ freq  tot)) 100) )]
-                             }
-             }])
-)
 
 ;; persist a skill to the database 
 ;; E.G. "programming"
@@ -263,31 +254,6 @@
        [?skill-ref :skill-set/skill ?skill-val]]  
      (db conn)  (get-job-keys-by-snapshot-and-skill conn description skill)))
 
-(defn get-skill-freq-by-snapshot-and-keywords [conn snapshot-description keyword-vector] 
-    (let [
-        results 
-            (q  '[:find ?skill-val (count ?job-set) :in $ ?val [?job-keys ...] 
-                  :where [?t :snapshot/description ?val]
-                  [?t :snapshot/job-set ?job-set]
-                  [?job-set :jobs/job-key ?job-keys] 
-                  [?job-set :jobs/skill-set ?job-skill-set]
-                  [?job-skill-set :skill-set/skill ?skill-val]] (db conn) snapshot-description 
-                  (get-job-keys-by-snapshot-and-skill conn snapshot-description keyword-vector ))] 
-        results))
-
-;; returns the total number of jobs stored in the database
-;; for a particular snapshot
-(defn get-job-total-by-snapshot-and-keywords [conn snapshot-description keyword-vector]
-  (count (get-job-keys-by-snapshot-and-skill conn snapshot-description keyword-vector)))
-
-;; same as above, but with a keyword filter
-(defn get-skill-history-keyword-filter [conn skill keyword-vector]
-  (let [descriptions (get-snapshot-descriptions conn)]
-    (for [d descriptions] 
-      (let [freq (skill-freq-by-snapshot conn d skill) 
-            freq (if (nil? freq) 0 freq) 
-            tot (get-job-total-by-snapshot-and-keywords conn d keyword-vector) percent (* (float (/ freq tot)) 100)] 
-        [d percent]))))
 
 ;; used to validate command line argument
 (defn snapshot-description-not-exists? [conn snapshot-description]
@@ -351,6 +317,4 @@
   (let [ snapshots (get-snapshot-descriptions conn)
          rows (for [snapshot snapshots] (skill-list-stat conn snapshot skill-list)) 
        ]
-      rows
-  )  
-)
+      rows))
