@@ -39,10 +39,11 @@
 ))
 
 
+(comment
 (deftest test-report-command?
   (testing "tests we can determine whether the command line starts with a report command"
     (let [args (vec ["-report"])]
      (is (report-command? args))
     )
   )  
-)
+))
