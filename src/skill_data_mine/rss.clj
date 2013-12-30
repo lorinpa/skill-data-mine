@@ -1,10 +1,6 @@
 (ns skill-data-mine.rss
   (:require [clojure.xml :as xml])
-   (:use skill-data-mine.persist)
 )
-
-(use '[datomic.api :only [q db] :as d])
-(use 'clojure.pprint)
 
 (defrecord Node [title pubDate link job-key categories ])
 
