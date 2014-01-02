@@ -65,23 +65,23 @@
 
 
 (defn process-report-command [conn args]
+  (let [ arg-count (count args)]
   (cond 
-    (= (count args) 1) (report-snapshots conn)
-    (= (count args) 3) 
+    (= arg-count 1) (report-snapshots conn)
+    (= arg-count 3) 
         (do
             (cond 
               (= (nth args 1) "jobs") (report-job-details conn (nth args 2)) 
               (= (nth args 1) "skill-history") (report-skill-history conn (nth args 2))
               :else (println "Invalid command line. Usage: -report jobs SNAPSHOT or -report skill-history SKILL (OPTIONAL skill filter list*)")
             ))
-    ;(> (count args) 3) (report-skill-history-filtered conn (nth args 2) (subvec (vec args ) 3))
-    (> (count args) 3) (report-skill-list-history conn  (subvec (vec args ) 2))
+    (> arg-count 3) (report-skill-list-history conn  (subvec (vec args ) 2))
     :else
     (do
       (println "Available reports:")
       (println "-report jobs SNAPSHOT")
       (println "-report skill-history SKILL"))
-  )
+  ))
   (System/exit 0))
 
 (defn process-init-command []
@@ -93,11 +93,11 @@
 (defn -main
   "Entry Point to Program"
   [& args]
-  (let [ uri "datomic:free://localhost:4334/job-posts" ]
+  (let [ uri "datomic:free://localhost:4334/job-posts" first-arg (nth args 0)]
       (cond
-        (= (nth args 0) "-init-db")  (process-init-command) 
-        (= (nth args 0) "-in") (process-import-command (get-connection uri) args ) 
-        (= (nth args 0) "-report") (process-report-command (get-connection uri) args ) 
+        (= first-arg "-init-db")  (process-init-command) 
+        (= first-arg "-in") (process-import-command (get-connection uri) args ) 
+        (= first-arg "-report") (process-report-command (get-connection uri) args ) 
         :else (display-command-line-help)
       )))
 
