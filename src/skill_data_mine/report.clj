@@ -27,18 +27,7 @@
     (view (bar-chart (vec skills) (vec percents)  :title title :vertical false :x-label "Skill" :y-label "% of Job Postings"  ) )
  ))
 
-;; Same as above, but we apply a keyword filter
-;; E.G. on jobs that contain either "java" or "clojure"
-(comment
-(defn display-top-stats-chart-keyword-filter [conn snapshot-description top total keyword-vector]
- (let [ title (format "%d Job Postings" total)
-        rows (sort-by first (take top (reverse (sort-by last (get-skill-freq-by-snapshot-and-keywords conn snapshot-description keyword-vector)))))
-        skills (map first rows)
-        percents (map #(float (* (/ (int (nth % 1)) total  ) 100 ) ) rows) 
-       ]
-    (view (bar-chart (vec skills) (vec percents)  :title title :vertical false :x-label "Skill" :y-label "% of Job Postings"  ) )
- ))
-)
+
 
 (defn display-skill-percent-history [conn skill]
   (let [jh (get-skill-history conn skill) ] 
