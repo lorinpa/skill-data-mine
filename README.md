@@ -67,10 +67,10 @@ You should have the free version of Datomic running your localhost.
 See [Datomic's website for details] (http://www.datomic.com/)
 
 ## Prepare Database (one time process)
-To install this projects schema. Run lein repl from the projects root directory.
-In the repl, run:
+To install this projects schema. Run lein repl from the projects root directory. Note! Datomic should be running on your locahost.
+From the command line with Leinegen:
 
-    * (init-db "datomic:free://localhost:4334/job-posts")
+    * $> lein run -init-db
 
 That function installs the schema and a custom function. 
 
