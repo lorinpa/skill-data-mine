@@ -9,9 +9,8 @@ Project is written in Clojure. Uses Datomic for data persistence and query servi
 
 This is a standalone command line application. Thus, I am using the free version of Datomic.
 
-I'll add a blog post on my website which details the implentation. Part of a series on Polyglot programming.
-
-See my [website, Public-Action.org] (http://public-action.org/mob/polyglot-index.html)  to read the articles series.
+See my website article [Data Mining with Clojure and Datomic] (http://public-action.org/mob/polyglot-data-mining-clojure-and-datomic.html)
+for more details. Articla and project is part of a series on Polyglot programming.
 
 ## Process
 * Parses an RSS feed (of job postings).
